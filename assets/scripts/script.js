@@ -10,6 +10,8 @@ function Board(el, rows, cols){
     this.cols = cols;
     this.activeColor = 'black';
     this.activeTheme = '#262626';
+    this.selectedPixels=[];
+    this.savedGrids=[];
     document.querySelector('.active-color').style.backgroundColor=this.activeColor;
     this.draw = false;
     this.isClearEnabled = false;
@@ -18,6 +20,7 @@ function Board(el, rows, cols){
     this.generateBoard();
     this.addColorPicker();
     this.bindEvents();
+    this.renderGrid();
 
 }
 
@@ -172,7 +175,7 @@ Board.prototype.bindEvents = function(){
     });
 
     this.saveGrid.addEventListener('click', e => {
-        // downloadImage();
+        this.saveAsGrid();
     });
     
   
@@ -230,16 +233,152 @@ Board.prototype.clearBoardBtn = function(e){
 }
 
 Board.prototype.fill = function(e){
-    // const cell = e.target.dataset['cell'];
+    const cell = e.target.dataset['cell'];
     const color = e.target.dataset['color'];
     color && (this.activeColor = color);
     
     // cell && (e.target.style.background = this.activeColor);
 // if(cell){
     e.target.style.background = this.activeColor;
+
+    if(cell !== undefined) {
+        let currentObj= {
+            color:e.target.style.background,
+            position:cell
+        }
+        this.selectedPixels.push(currentObj)
+    }
     document.querySelector('.active-color').style.backgroundColor=this.activeColor;
 // }
+
    
+   console.table(this.selectedPixels);
+}
+Board.prototype.renderGrid =function () {
+
+    // this.selectedPixels=[
+    //     {
+    //       "color": "black",
+    //       "position": "0:0"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "0:1"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "1:1"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "2:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:3"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:4"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "4:4"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "4:5"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:5"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:6"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "2:6"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "1:6"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "0:6"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "1:5"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "1:6"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "0:6"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "4:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:1"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "4:1"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "2:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "2:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "3:2"
+    //     },
+    //     {
+    //       "color": "black",
+    //       "position": "4:2"
+    //     }
+    //   ]
+      if(localStorage.getItem("pixels")){
+        this.selectedPixels = JSON.parse(localStorage.getItem("pixels"));
+      }
+
+      for (const iterator of this.selectedPixels) {
+              document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
+    
+          
+      }
+    //   setInterval(() => {
+    //     document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
+    //   }, 3000);
+}
+
+Board.prototype.saveAsGrid =function () {
+
+    localStorage.setItem("pixels", JSON.stringify(this.selectedPixels));
 
 }
 
