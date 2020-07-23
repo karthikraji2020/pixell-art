@@ -44,28 +44,33 @@ Board.prototype.clearBoard = function() {
 Board.prototype.generateBoard = function() {
    
     const sidenavFragment = document.createDocumentFragment();
-    //el,className,textContent
-    let crEle =createElement('button','toggle-grid','grid');
+    //el,className,textContent,faclass
+    let crEle =createElement('button','toggle-grid','grid','fa-th');
     this.toggleGrid =crEle;
     sidenavFragment.appendChild(crEle);
     
-    let shapeEle =createElement('button','toggle-shape','shape');
+    let shapeEle =createElement('button','toggle-shape','shape','fa-circle-o');
     this.toggleShape =shapeEle;
     sidenavFragment.appendChild(shapeEle);
 
-    let resetEle =createElement('button','resetBoard','resetBoard');
+    // let resetEle =createElement('button','resetBoard','resetBoard','fa-sync');
+    let resetEle =createElement('button','resetBoard','resetBoard','fa-refresh');
     this.resetBoard =resetEle;
     sidenavFragment.appendChild(resetEle);
 
-    let clearEle =createElement('button','clearBoard','clearBoard');
+    let clearEle =createElement('button','clearBoard','clearBoard','fa-eraser');
     this.clearBoard =clearEle;
     sidenavFragment.appendChild(clearEle);
     
-    let pickerEle =createElement('button','colorPicker','colorPicker');
+    let pickerEle =createElement('button','colorPicker','colorPicker','fa-eyedropper');
     this.togglePicker =pickerEle;
     sidenavFragment.appendChild(pickerEle);
 
-    let saveEle =createElement('button','saveEle','save');
+    let downloadAsImageEle =createElement('button','DownloadAsImage','Download As Image','fa-download');
+    this.downloadAsImage =downloadAsImageEle;
+    sidenavFragment.appendChild(downloadAsImageEle);
+
+    let saveEle =createElement('button','saveEle','save','fa-save');
     this.saveGrid =saveEle;
     sidenavFragment.appendChild(saveEle);
 
@@ -162,9 +167,15 @@ Board.prototype.bindEvents = function(){
         this.toggleShapeBtn(e);
     });
 
-    this.saveGrid.addEventListener('click', e => {
+    this.downloadAsImage.addEventListener('click', e => {
         downloadImage();
     });
+
+    this.saveGrid.addEventListener('click', e => {
+        // downloadImage();
+    });
+    
+  
 
     this.resetBoard.addEventListener('click', e => {
         this.resetBoardBtn(e);
@@ -242,44 +253,36 @@ function getRandomColor() {
 }
 
 downloadImage = function() {
-    html2canvas(document.querySelector("#board")).then(function(canvas) {
-       let dataURL= canvas.toDataURL('image/jpeg', 1.0);
+    html2canvas(document.querySelector(".board-wrapper")).then(function(canvas) {
+       let dataURL= canvas.toDataURL('image/jpg', 1.0);
         var a = document.createElement("a"); //Create <a>
         a.href = dataURL; //Image Base64 Goes here
         let timeInMiliSec = Date.now();
-        a.download = `pixelArt_${timeInMiliSec}.jpeg`; //File name Here
+        a.download = `pixelArt_${timeInMiliSec}.jpg`; //File name Here
         a.click(); //Downloaded file
     });
   }
   
 
-  function saveAs(uri, filename) {
-    var link = document.createElement('a');
-    if (typeof link.download === 'string') {
-      link.href = uri;
-      link.download = filename;
-      //Firefox requires the link to be in the body
-      document.body.appendChild(link);
-      //simulate click
-      link.click();
-      //remove the link when done
-      document.body.removeChild(link);
-    } else {
-      window.open(uri);
-    }
-  }
-
-  function createElement (el,className,textContent) {
+  function createElement (el,className,textContent,faClass) {
+    let iele;
     const element = document.createElement(el);
+    if(faClass.includes('fa-')) {
+     iele = document.createElement('i');
+    }
     if (el==='button') {
         element.classList.add('btn');
         element.classList.add('text-white');
-        // element.classList.add('fa');
-        // element.classList.add('fa-user');
-        // element.setAttribute("title",textContent);
+        if(faClass.includes('fa-')) {
+             iele.classList.add('fa');
+             iele.classList.add(faClass);
+             element.appendChild(iele);
+        }else {
+            element.textContent= textContent;
+        }
     }
+    element.setAttribute("title",textContent);
     element.classList.add(className);
-    element.textContent= textContent;
     return element;
    
 }
