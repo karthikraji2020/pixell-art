@@ -23,28 +23,29 @@
 </head>
 <body>
 <div class="container">
-  <!-- <div id="board"></div>
-  </div> -->
+
 
  <div class="wrapper">
-   <div class="sidenav">
+  <div class="sidenav">
+     
 
-   </div>
+  </div>
+  
    <h1>picxl Art </h6>
-   <div class="board-wrapper">
+   <div class="board-wrapper" >
    <div id="board" ></div>
   </div>
 
    <div class="features">
     <div class="size_slider">
       <p class="title">size </p>
-        <input type="range" id="size_slider" min="30" max="100" >
+        <input type="range" id="size_slider" min="30" max="100" value="50">
+        <span class="boardSize"></span>
     </div>
     <div class="underline"></div>
-
     <div class="count_slider">
-      <p class="title">count slider </p>
-        <input type="range" id="count_slider" min="7" max="55" >
+      <p class="title">cell count  </p>
+        <input type="range" id="count_slider" min="7" max="55" value="25">
         <div class="positionRow">
           <span>
             Row :<span class="grid_row"></span>
@@ -57,7 +58,7 @@
     <div class="underline"></div>
 
     <div class="position">
-      <p class="title">position </p>
+      <p class="title">Current position </p>
       <div class="positionRow">
               <span>
                 Row :<span class="position_row"></span>
@@ -70,10 +71,11 @@
     <div class="underline"></div>
     <div class="colors">
       <p class="title">colors </p>
-     
       <div class="color-palette">
       </div>
     </div>
+    <div class="underline"></div>
+
     <div class="activeColor">
       <p class="title">activeColor </p>
       <div class="active-colorRow">
@@ -86,11 +88,40 @@
       <p class="title">theme </p>
         <div class="theme-paletteRow">
         
-        </div>
+        </div> 
     </div>
+    <div class="underline"></div>
+    <div class="savedGrid">
+      <p class="title">Saved Grids</p>
+      <div  id="savedGridsList">
+      </div>
+  </div>
+
 
    </div>
  </div>
+
+
+   <!-- Modal -->
+   <div class="modal fade" id="saveGridModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="form" id="saveGridForm">
+              <label for="gridName">Enter Grid Name</label>
+                <input type="text" class="form-control" placeholder="Enter Grid Name" id="gridName" autocomplete="off">
+                <button type="submit" class="btn btn-dark btn-block">Save Grid </button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 <script src="./assets/scripts/script.js"></script>
 <script>
  

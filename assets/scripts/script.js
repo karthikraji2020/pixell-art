@@ -18,7 +18,7 @@ function Board(el, rows, cols){
     
     this.size_sliderVal =document.querySelector('#size_slider');
     this.count_sliderVal =document.querySelector('#count_slider');
-
+    this.saveGridForm = document.querySelector('#saveGridForm');
     this.draw = false;
     this.isClearEnabled = false;
     this.isChangeTheme = false;
@@ -26,7 +26,80 @@ function Board(el, rows, cols){
     this.generateBoard();
     this.addColorPicker();
     this.bindEvents();
-    this.renderGrid();
+    this.renderGrid('tewtswe');
+
+    if(localStorage.getItem('Pixll-Art-Theme')) {
+        let bg = JSON.parse(localStorage.getItem('Pixll-Art-Theme'));
+        console.log(bg,'bg');
+        this.sidenav.style.backgroundColor = bg;
+        this.features.style.backgroundColor = bg;
+    }
+    this.savedGrids.push({
+        "id": 1,
+        "gridName": "test",
+        "savedPixels": [
+          {
+            "color": "black",
+            "position": "2:2"
+          },
+          {
+            "color": "black",
+            "position": "3:8"
+          },
+          {
+            "color": "black",
+            "position": "3:7"
+          },
+          {
+            "color": "black",
+            "position": "2:7"
+          },
+          {
+            "color": "black",
+            "position": "2:6"
+          },
+          {
+            "color": "black",
+            "position": "3:6"
+          },
+          {
+            "color": "black",
+            "position": "3:5"
+          },
+          {
+            "color": "black",
+            "position": "4:4"
+          },
+          {
+            "color": "black",
+            "position": "6:4"
+          },
+          {
+            "color": "black",
+            "position": "7:4"
+          },
+          {
+            "color": "black",
+            "position": "8:4"
+          },
+          {
+            "color": "black",
+            "position": "9:5"
+          },
+          {
+            "color": "black",
+            "position": "9:6"
+          }
+        ]
+      });
+
+      for(let grid of this.savedGrids){
+        let gridNameEle = document.createElement('div');
+        gridNameEle.dataset["savedGrid"]=`${grid.id}`;
+        gridNameEle.textContent=`${grid.id} . ${grid.gridName}`;
+        document.querySelector('#savedGridsList').appendChild(gridNameEle);
+    }
+
 
 }
 
@@ -54,6 +127,11 @@ Board.prototype.generateBoard = function() {
    
     const sidenavFragment = document.createDocumentFragment();
     //el,className,textContent,faclass
+    let logoEle =createElement('b','pixll-art-logo','Picxll','');
+    // this.toggleGrid =logoEle;
+    sidenavFragment.appendChild(logoEle);
+
+
     let crEle =createElement('button','toggle-grid','grid','fa-th');
     this.toggleGrid =crEle;
     sidenavFragment.appendChild(crEle);
@@ -182,11 +260,11 @@ Board.prototype.bindEvents = function(){
     });
 
     this.saveGrid.addEventListener('click', e => {
-        this.saveAsGrid();
+        // this.saveAsGrid();
     });
     
     this.resetBoard.addEventListener('click', e => {
-        this.resetBoardBtn(e);
+        this.resetBoardBtn('test');
     });
 
     this.clearBoard.addEventListener('click', e => {
@@ -197,17 +275,29 @@ Board.prototype.bindEvents = function(){
         this.sizeValueChange(e);
     });
     
+    this.saveGridForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.saveAsGrid();
+        
+    });
+    
     this.count_sliderVal.addEventListener('change',(e)=>{
       let rowValue =e.target.value;
       let colValue =e.target.value;
     
       this.gridRowPos.innerText = rowValue;
       this.gridColPos.innerText = colValue;
-    
-    //   document.querySelector('.grid_row').innerText = rowValue;
-    //   document.querySelector('.grid_col').innerText = colValue;
       
       new Board("#board", rowValue, colValue); 
+    });
+
+    document.querySelector('#savedGridsList').addEventListener('click',(e)=>{
+        let selectedObj;
+        let currentNode = e.target.dataset['savedGrid'];
+        if(currentNode!== undefined && currentNode !=='' ) {
+            selectedObj=  this.savedGrids.filter((x)=> { return x.id == currentNode});
+           this.renderGrid(selectedObj[0].gridName);
+        }
     });
 
 
@@ -216,6 +306,10 @@ Board.prototype.changeTheme = function(e) {
         this.activeTheme = e.target.style.backgroundColor;
         this.sidenav.style.backgroundColor = this.activeTheme;
         this.features.style.backgroundColor = this.activeTheme;
+
+            let bg = localStorage.setItem('Pixll-Art-Theme',JSON.stringify(this.activeTheme));
+            console.log(JSON.stringify(this.activeTheme),'bgTheme');
+
 }
 
 Board.prototype.toggleGridBtn = function(e){
@@ -241,14 +335,14 @@ Board.prototype.toggleShapeBtn = function(e){
     }
 }
 
-Board.prototype.resetBoardBtn = function(e){
+Board.prototype.resetBoardBtn = function(gridName){
         for(var i=0; i< this.rows; i++){
             for(var j=0; j< this.cols; j++){
                 document.querySelector(`.columns[data-cell='${i}:${j}']`).style.background="";              
             }
         }
 
-        localStorage.setItem('savedGrid','');
+        localStorage.setItem(gridName,'');
 }
 
 Board.prototype.clearBoardBtn = function(e){
@@ -278,24 +372,28 @@ Board.prototype.fill = function(e){
 // }
 
    
-//    console.table(this.selectedPixels);
 }
 Board.prototype.renderGrid =function (gridName) {
 
     //   if(localStorage.getItem("savedGrid")){
       if(localStorage.getItem(gridName)){
-        this.selectedPixels = JSON.parse(localStorage.getItem(gridName));
+        this.selectedPixels = JSON.parse(localStorage.getItem(gridName)).savedPixels;
         let index=-1;
         let animationIntervalFlag = setInterval(() => {
-             index++;
+            ++index;
              let iterator=this.selectedPixels[index];
-            if(index >this.selectedPixels.length){
+            if(index >=this.selectedPixels.length ){
                 clearInterval(animationIntervalFlag);
-          }else {
-              document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
-          }
+             } else {
+               if(iterator.position !==undefined) {
+                   document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
+               }
+            }
         }, 20);
       }
+      this.gridRowPos.innerText = this.rows;
+      this.gridColPos.innerText = this.cols;
+      document.querySelector('.boardSize').innerText =this.size_sliderVal.value+'%'; 
 
     //   for (const iterator of this.selectedPixels) {
     //           document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
@@ -304,14 +402,34 @@ Board.prototype.renderGrid =function (gridName) {
 }
 
 Board.prototype.saveAsGrid =function () {
-    localStorage.setItem("savedGrid", JSON.stringify(this.selectedPixels));
+
+    let gridName =document.querySelector('#gridName').value;
+    if(gridName) {
+    let saveFrameObj = {
+        id: this.savedGrids.length+1,
+        gridName,
+        savedPixels:this.selectedPixels
+    };
+
+    this.savedGrids.push(saveFrameObj);
+    for(let grid of this.savedGrids){
+        let gridNameEle = document.createElement('div');
+        gridNameEle.dataset["savedGrid"]=`${grid.id}`;
+        gridNameEle.textContent=`${grid.id} .${grid.gridName}`;
+        document.querySelector('#savedGridsList').appendChild(gridNameEle);
+    }
+
+    localStorage.setItem(gridName, JSON.stringify(saveFrameObj));
+    document.querySelector('.close').click();
+
+}
 }
 
 Board.prototype.sizeValueChange = function(e){
     let value =e.target.value;
-    debugger;
     this.el.style.height =value+'%';
-    this.el.style.width =value+'%';
+    this.el.style.width = value+'%';
+    document.querySelector('.boardSize').innerText =value+'%'; 
 }
 
 
@@ -325,7 +443,7 @@ function getRandomColor() {
 }
 
 downloadImage = function() {
-    html2canvas(document.querySelector(".board-wrapper")).then(function(canvas) {
+    html2canvas(document.querySelector("#board")).then(function(canvas) {
        let dataURL= canvas.toDataURL('image/jpg', 1.0);
         var a = document.createElement("a"); //Create <a>
         a.href = dataURL; //Image Base64 Goes here
@@ -339,6 +457,9 @@ downloadImage = function() {
   function createElement (el,className,textContent,faClass) {
     let iele;
     const element = document.createElement(el);
+    if(className.includes('logo')) {
+        element.textContent= textContent;
+       }
     if(faClass.includes('fa-')) {
      iele = document.createElement('i');
     }
@@ -349,6 +470,14 @@ downloadImage = function() {
              iele.classList.add('fa');
              iele.classList.add(faClass);
              element.appendChild(iele);
+             if(faClass==='fa-save'){
+                element.setAttribute("href","saveGridModal");
+                element.dataset["toggle"]="modal";
+                element.dataset["target"]="#saveGridModal";
+             }
+            // element.textContent= textContent;
+            // element.append(textContent)  
+
         }else {
             element.textContent= textContent;
         }
