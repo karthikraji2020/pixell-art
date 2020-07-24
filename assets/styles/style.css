@@ -31,7 +31,6 @@ body{
     flex-direction: column;
     width: 80%; 
     height: 80%; 
-    /* border: 1px solid #efefef; */
     /* cursor: pointer !important; */
 
 }
@@ -55,7 +54,6 @@ body{
     cursor: crosshair;
 }
 .position{
-    display: flex;
     width: 100%;
 }
 .features{
@@ -112,11 +110,9 @@ body{
     border-radius: 50%;
     flex: 1;
     margin: 1px 6px; 
-    /* border: 1px solid #ccc; */
     transition: 1s;
     cursor: pointer !important;
     box-shadow: var(--box-shadow );
-
 }
 
 .active-color {
@@ -124,8 +120,6 @@ body{
     flex: 1;
     margin: 1px auto; 
     cursor: pointer !important;
-
-
 }
 .colorTileRow,.active-colorRow,.theme-paletteRow{
     height: 1.5rem;
@@ -143,13 +137,18 @@ body{
 }
 .theme-paletteRow .themeTile:hover {
     border:none;
-    box-shadow:
-    0 2px 1px rgba(0, 0, 0, 0.05),
-    0 2px 6px rgba(0, 0, 0, 0.05),
-    0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: var(--box-shadow-hover);
     transition: 1s ease-in;
-
 }
 #size_slider {
     width: 100%;
+}
+.positionRow{
+    display: flex;
+    justify-content: space-around;
+}
+.positionRow span{
+    color: #efe;
+    /* padding:12px;     */
+    /* border: 1px solid #efe; */
 }

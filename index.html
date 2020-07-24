@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixl Art  </title>
-  <link rel="stylesheet" href="assets/styles/style.css">
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" /> -->
   <meta charset="utf-8">
+  <link rel="stylesheet" href="assets/styles/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script async src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -31,7 +30,7 @@
    <div class="sidenav">
 
    </div>
-   <p>picxl Art </p>
+   <h1>picxl Art </h6>
    <div class="board-wrapper">
    <div id="board" ></div>
   </div>
@@ -46,12 +45,20 @@
     <div class="count_slider">
       <p class="title">count slider </p>
         <input type="range" id="count_slider" min="7" max="55" >
+        <div class="positionRow">
+          <span>
+            Row :<span class="grid_row"></span>
+         </span> 
+          <span>
+            Col :<span class="grid_col"></span>
+         </span> 
+  </div>
     </div>
     <div class="underline"></div>
 
     <div class="position">
       <p class="title">position </p>
-      <div>
+      <div class="positionRow">
               <span>
                 Row :<span class="position_row"></span>
              </span> 
@@ -73,7 +80,6 @@
         <div class="active-color">
         </div>
       </div>
-     
     </div>
     <div class="underline"></div>
     <div class="theme-palette">
@@ -87,27 +93,8 @@
  </div>
 <script src="./assets/scripts/script.js"></script>
 <script>
-  let boardCell=25;
-  const size_sliderVal =document.querySelector('#size_slider');
-  const count_sliderVal =document.querySelector('#count_slider');
-  const board =document.querySelector('#board');
-  // setTimeout(()=>{
-  //   size_sliderVal.change('100');
-  // },0)
-
-  size_sliderVal.addEventListener('change',(e)=>{
-    let value =e.target.value;
-    board.style.height =value+'%';
-    board.style.width =value+'%';
-  });
-
-  count_sliderVal.addEventListener('change',(e)=>{
-    let value =e.target.value;
-    boardCell =value;
-    new Board("#board", boardCell, boardCell); 
-  });
-  
-  new Board("#board", boardCell, boardCell); 
+ 
+  new Board("#board", 25, 25); 
 
 </script>
 </body>

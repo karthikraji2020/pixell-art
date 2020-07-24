@@ -13,6 +13,12 @@ function Board(el, rows, cols){
     this.selectedPixels=[];
     this.savedGrids=[];
     document.querySelector('.active-color').style.backgroundColor=this.activeColor;
+    this.gridRowPos =document.querySelector('.grid_row');
+    this.gridColPos =document.querySelector('.grid_col');
+    
+    this.size_sliderVal =document.querySelector('#size_slider');
+    this.count_sliderVal =document.querySelector('#count_slider');
+
     this.draw = false;
     this.isClearEnabled = false;
     this.isChangeTheme = false;
@@ -141,6 +147,7 @@ Board.prototype.bindEvents = function(){
     this.el.addEventListener('mouseover', e => {
         document.querySelector('.position_row').innerText = e.target.dataset['cell'].split(':')[0];
         document.querySelector('.position_col').innerText = e.target.dataset['cell'].split(':')[1];
+        
         this.draw && this.fill(e);
     });
 
@@ -178,8 +185,6 @@ Board.prototype.bindEvents = function(){
         this.saveAsGrid();
     });
     
-  
-
     this.resetBoard.addEventListener('click', e => {
         this.resetBoardBtn(e);
     });
@@ -187,6 +192,25 @@ Board.prototype.bindEvents = function(){
     this.clearBoard.addEventListener('click', e => {
         this.isClearEnabled = !this.isClearEnabled;
     });
+
+    this.size_sliderVal.addEventListener('change', (e) => {
+        this.sizeValueChange(e);
+    });
+    
+    this.count_sliderVal.addEventListener('change',(e)=>{
+      let rowValue =e.target.value;
+      let colValue =e.target.value;
+    
+      this.gridRowPos.innerText = rowValue;
+      this.gridColPos.innerText = colValue;
+    
+    //   document.querySelector('.grid_row').innerText = rowValue;
+    //   document.querySelector('.grid_col').innerText = colValue;
+      
+      new Board("#board", rowValue, colValue); 
+    });
+
+
 }
 Board.prototype.changeTheme = function(e) {
         this.activeTheme = e.target.style.backgroundColor;
@@ -223,6 +247,8 @@ Board.prototype.resetBoardBtn = function(e){
                 document.querySelector(`.columns[data-cell='${i}:${j}']`).style.background="";              
             }
         }
+
+        localStorage.setItem('savedGrid','');
 }
 
 Board.prototype.clearBoardBtn = function(e){
@@ -252,135 +278,42 @@ Board.prototype.fill = function(e){
 // }
 
    
-   console.table(this.selectedPixels);
+//    console.table(this.selectedPixels);
 }
-Board.prototype.renderGrid =function () {
+Board.prototype.renderGrid =function (gridName) {
 
-    // this.selectedPixels=[
-    //     {
-    //       "color": "black",
-    //       "position": "0:0"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "0:1"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "1:1"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "2:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:3"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:4"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "4:4"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "4:5"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:5"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:6"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "2:6"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "1:6"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "0:6"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "1:5"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "1:6"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "0:6"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "4:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:1"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "4:1"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "2:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "2:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "3:2"
-    //     },
-    //     {
-    //       "color": "black",
-    //       "position": "4:2"
-    //     }
-    //   ]
-      if(localStorage.getItem("pixels")){
-        this.selectedPixels = JSON.parse(localStorage.getItem("pixels"));
-      }
-
-      for (const iterator of this.selectedPixels) {
+    //   if(localStorage.getItem("savedGrid")){
+      if(localStorage.getItem(gridName)){
+        this.selectedPixels = JSON.parse(localStorage.getItem(gridName));
+        let index=-1;
+        let animationIntervalFlag = setInterval(() => {
+             index++;
+             let iterator=this.selectedPixels[index];
+            if(index >this.selectedPixels.length){
+                clearInterval(animationIntervalFlag);
+          }else {
               document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
-    
-          
+          }
+        }, 20);
       }
-    //   setInterval(() => {
-    //     document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
-    //   }, 3000);
+
+    //   for (const iterator of this.selectedPixels) {
+    //           document.querySelector(`.columns[data-cell='${iterator.position}']`).style.backgroundColor=`${iterator.color}`;
+    //   }
+    
 }
 
 Board.prototype.saveAsGrid =function () {
-
-    localStorage.setItem("pixels", JSON.stringify(this.selectedPixels));
-
+    localStorage.setItem("savedGrid", JSON.stringify(this.selectedPixels));
 }
+
+Board.prototype.sizeValueChange = function(e){
+    let value =e.target.value;
+    debugger;
+    this.el.style.height =value+'%';
+    this.el.style.width =value+'%';
+}
+
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
@@ -397,7 +330,7 @@ downloadImage = function() {
         var a = document.createElement("a"); //Create <a>
         a.href = dataURL; //Image Base64 Goes here
         let timeInMiliSec = Date.now();
-        a.download = `pixelArt_${timeInMiliSec}.jpg`; //File name Here
+        a.download = `pixelArt${timeInMiliSec}.jpg`; //File name Here
         a.click(); //Downloaded file
     });
   }
