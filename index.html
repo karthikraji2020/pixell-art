@@ -9,36 +9,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script async src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-
+  <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
  <!-- Fonts -->
-    <!-- font-family: 'Monserrat', Helvetica, sans-serif !important; -->
  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
- <!-- icons -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   
 </head>
 <body>
 <div class="container">
-
-
  <div class="wrapper">
   <div class="sidenav">
-     
-
   </div>
-  
-   <h1>picxl Art </h6>
+
+   <h1>Pixll Art </h1>
    <div class="board-wrapper" >
    <div id="board" ></div>
   </div>
 
    <div class="features">
     <div class="size_slider">
-      <p class="title">size </p>
+      <p class="title">Board size </p>
         <input type="range" id="size_slider" min="30" max="100" value="50">
         <span class="boardSize"></span>
     </div>
@@ -53,7 +46,7 @@
           <span>
             Col :<span class="grid_col"></span>
          </span> 
-  </div>
+       </div>
     </div>
     <div class="underline"></div>
 
@@ -69,10 +62,11 @@
       </div>
     </div>
     <div class="underline"></div>
+
     <div class="colors">
       <p class="title">colors </p>
-      <div class="color-palette">
-      </div>
+        <div class="color-palette">
+        </div>
     </div>
     <div class="underline"></div>
 
@@ -91,13 +85,11 @@
         </div> 
     </div>
     <div class="underline"></div>
-    <div class="savedGrid">
-      <p class="title">Saved Grids</p>
-      <div  id="savedGridsList">
+      <div class="savedGrid">
+        <p class="title">Saved Grids</p>
+          <div  id="savedGridsList">
+          </div>
       </div>
-  </div>
-
-
    </div>
  </div>
 
@@ -121,12 +113,11 @@
       </div>
     </div>
 </div>
-
 <script src="./assets/scripts/script.js"></script>
-<script>
- 
-  new Board("#board", 25, 25); 
 
+<script>
+  new Board("#board", 25, 25); 
 </script>
+
 </body>
 </html>

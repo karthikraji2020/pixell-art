@@ -1,8 +1,9 @@
 * {
     box-sizing: border-box;
-}
+}   
 :root {
     --bg-primary:"#4352fc";
+    --text-color-primary:"#ffffff";
     --box-shadow :0 2px 1px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.15),0 4px 16px rgba(0, 0, 0, 0.25);
     --box-shadow-hover :0 2px 1px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.05),0 4px 16px rgba(0, 0, 0, 0.05);
 }
@@ -11,6 +12,8 @@ body{
     margin: 0;
     font-family: 'Monserrat', Helvetica, sans-serif !important;
     background-color: #ececec !important;
+    /* color: var(--text-color-primary) !important; */
+    color: #fff!important;
 }
 .container {
     display:flex;
@@ -25,25 +28,17 @@ body{
     background-color: #ffffff;
     border-radius: 1rem;
     box-shadow: var(--box-shadow-hover);
-
-    /* min-width: 70vw;
-    height: 35rem; */
-    /* width: 35rem;  */
-    /* margin:0  17vw 0 7vw; */
     display:flex;
     justify-content:center;
     align-items:center;
     cursor: pointer;
     border: 1px solid #efefef;
-
 }
 #board {
     display: flex;
     flex-direction: column;
     width: 80%; 
     height: 80%; 
-    /* cursor: pointer !important; */
-
 }
 .rows{
     flex: 1;
@@ -107,20 +102,9 @@ body{
     font-weight: 600;
     text-transform: capitalize;
     text-align: center;
-    color: white;
-    /* width: 50%;
-    border-bottom:5px solid #efe; */
-
 }
-/* .tsitle::after {
-    content: ' ';
-    width: 100%;
-    height: .2rem;
-    border-bottom:5px solid #efe;
 
-} */
 .underline {
-    /* border: 1px solid #efe; */
     margin-bottom: .7rem;
     padding: .1rem !important;
 }
@@ -153,7 +137,6 @@ body{
     justify-content: space-around;
     margin-bottom: .5rem;
     background-color: transparent !important;
-
 }
 .theme-paletteRow .themeTile{
     border-radius: 20%;
@@ -174,22 +157,21 @@ body{
 }
 .positionRow span,.boardSize{
     color: #efe;
-    /* padding:12px;     */
-    /* border: 1px solid #efe; */
 }
 h1{
+    color: #111;
     text-align: center;
     font-weight: bold;
     text-transform: capitalize;
 }
 .pixll-art-logo{
-    color: white;
     text-align: center;
 }
-.savedGrid ,.theme-palette,.activeColor,.colors,.position,.count_slider{
+.size_slider,.savedGrid ,.theme-palette,.activeColor,.colors,.position,.count_slider{
     box-shadow: var(--box-shadow);
     border-radius: .5rem;
 }
-/* .modal-content button.btn.btn-block{
-    background: var(--bg-primary) !important;
-} */
+#savedGridsList {
+    height: 2.5rem;
+    overflow-y: scroll;
+}
