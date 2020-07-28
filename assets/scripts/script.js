@@ -5,6 +5,7 @@ function Board(el, rows, cols){
     this.features = document.querySelector('.features');
     this.themePalette = document.querySelector('.theme-palette');
     this.themePaletteRow = document.querySelector('.theme-paletteRow');
+    this.navbarToggle = document.querySelector('.navbarToggle');
     this.themePaletteColors = ["#262626","#2f1eb0","#a06607","#1e7e34","#980a89"]
     this.rows = rows;
     this.cols = cols;
@@ -122,33 +123,37 @@ Board.prototype.generateBoard = function() {
     let logoEle =createElement('b','pixll-art-logo','Picxll','');
     sidenavFragment.appendChild(logoEle);
 
-    let crEle =createElement('button','toggle-grid','grid','fa-th');
+    let crEle =createElement('button','toggle-grid','Grid','fa-th');
     this.toggleGrid =crEle;
     sidenavFragment.appendChild(crEle);
     
-    let shapeEle =createElement('button','toggle-shape','shape','fa-circle-o');
+    let shapeEle =createElement('button','toggle-shape','Shape','fa-circle-o');
     this.toggleShape =shapeEle;
     sidenavFragment.appendChild(shapeEle);
 
-    let resetEle =createElement('button','resetBoard','resetBoard','fa-refresh');
+    let resetEle =createElement('button','resetBoard','ResetBoard','fa-refresh');
     this.resetBoard =resetEle;
     sidenavFragment.appendChild(resetEle);
 
-    let clearEle =createElement('button','clearBoard','clearBoard','fa-eraser');
+    let clearEle =createElement('button','clearBoard','ClearBoard','fa-eraser');
     this.clearBoard =clearEle;
     sidenavFragment.appendChild(clearEle);
     
-    let pickerEle =createElement('button','colorPicker','colorPicker','fa-eyedropper');
+    let pickerEle =createElement('button','colorPicker','ColorPicker','fa-eyedropper');
     this.togglePicker =pickerEle;
     sidenavFragment.appendChild(pickerEle);
 
-    let downloadAsImageEle =createElement('button','DownloadAsImage','Download As Image','fa-download');
+    let downloadAsImageEle =createElement('button','DownloadAsImage','Download','fa-download');
     this.downloadAsImage =downloadAsImageEle;
     sidenavFragment.appendChild(downloadAsImageEle);
 
-    let saveEle =createElement('button','saveEle','save','fa-save');
+    let saveEle =createElement('button','saveEle','Save','fa-save');
     this.saveGrid =saveEle;
     sidenavFragment.appendChild(saveEle);
+
+    let navbarToggleEle =createElement('button','navbarToggle','','fa-angle-double-right');
+    this.navbarToggle =navbarToggleEle;
+    sidenavFragment.appendChild(navbarToggleEle);
 
     this.sidenav.appendChild(sidenavFragment);
 
@@ -248,6 +253,16 @@ Board.prototype.bindEvents = function(){
        this.togglePickerBtn(e);
     });
 
+    this.navbarToggle.addEventListener('click', e => {
+        debugger;
+     this.navbarToggleBtn();    
+        // if(e.target.firstChild.className.includes('double-right')){
+        //     e.target.firstChild.classList.add('fa-angle-double-left');
+        // } else {
+        //     e.target.firstChild.classList.add('fa-angle-double-right');
+        // }
+    });
+
     this.toggleShape.addEventListener('click', e => {
         this.toggleShapeBtn(e);
     });
@@ -291,6 +306,11 @@ Board.prototype.bindEvents = function(){
            this.renderGrid(selectedObj[0].gridName);
         }
     });
+
+    document.getElementById("pixell-art-colorPicker").addEventListener("change", e=>{
+        this.onChangeColor(e);
+    });
+    
 }
 
 Board.prototype.changeTheme = function(e) {
@@ -301,26 +321,17 @@ Board.prototype.changeTheme = function(e) {
 }
 
 Board.prototype.toggleGridBtn = function(e){
-    if(this.el.className.includes('border-none')){
-        this.el.classList.remove("border-none");
-    }else{
-        this.el.classList.add("border-none");
-    }
+    this.el.classList.toggle("border-none");
 }
 Board.prototype.togglePickerBtn = function(e){
-    if(this.el.className.includes('picker')){
-        this.el.classList.remove("picker");
-    }else{
-        this.el.classList.add("picker");
-    }
+    this.el.classList.toggle("picker");
+}
+Board.prototype.navbarToggleBtn = function(){
+    this.sidenav.classList.toggle("title-label-hide");
 }
 
 Board.prototype.toggleShapeBtn = function(e){
-    if(this.el.className.includes('shape-circle')){
-        this.el.classList.remove("shape-circle");
-    }else{
-        this.el.classList.add("shape-circle");
-    }
+    this.el.classList.toggle("shape-circle");
 }
 
 Board.prototype.resetBoardBtn = function(gridName){
@@ -398,6 +409,7 @@ Board.prototype.saveAsGrid =function () {
     }
 }
 
+
 Board.prototype.sizeValueChange = function(e){
     let value =e.target.value;
     this.el.style.height =value+'%';
@@ -406,13 +418,15 @@ Board.prototype.sizeValueChange = function(e){
 }
 function createElement (el,className,textContent,faClass) {
     let iele;
-    const element = document.createElement(el);
+    const element = document.createElement('div');
        (className.includes('logo')) && (element.textContent= textContent)
+    
     if(faClass.includes('fa-')) {
      iele = document.createElement('i');
     }
-    if (el==='button') {
-        element.classList.add('btn');
+    // if (el==='button') {
+        // element.classList.add('btn');
+        // element.classList.add('text-left');
         element.classList.add('text-white');
         if(faClass.includes('fa-')) {
              iele.classList.add('fa');
@@ -423,12 +437,27 @@ function createElement (el,className,textContent,faClass) {
                 element.dataset["toggle"]="modal";
                 element.dataset["target"]="#saveGridModal";
              }
+             if(!faClass.includes('angle')) {
+             let labelEle = document.createElement('span')
+             labelEle.classList.add('title-label');
+             labelEle.textContent= textContent;
+             element.append(labelEle);}
         }else {
             element.textContent= textContent;
         }
-    }
+    // }
     element.setAttribute("title",textContent);
     element.classList.add(className);
+    //   element.dataset["aos"]="flip-up";
+    //   element.dataset["aosEasing"] = "linear";
+    //   element.dataset["aosDuration"] ="2000";
+    if(!className.includes('logo')){
+        element.classList.add('sidenav-item');
+    //         element.dataset["aos"]="flip-up";
+    //   element.dataset["aosEasing"] = "linear";
+    //   element.dataset["aosDuration"] ="2000";
+    }
+  
     return element;
 }
 
@@ -452,6 +481,10 @@ function getRandomColor() {
     return color;
 }
 
-  
+Board.prototype.onChangeColor = function(e){
+    this.activeColor = e.target.value;
+    document.querySelector('.active-color').style.backgroundColor=this.activeColor;
+    // document.getElementById("Myelement").style.color = document.getElementById("ColorPicker1").value; 
+} 
 
  
