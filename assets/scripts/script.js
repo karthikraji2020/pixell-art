@@ -9,8 +9,9 @@ function Board(el, rows, cols){
     this.themePaletteColors = ["#262626","#2f1eb0","#a06607","#1e7e34","#980a89"]
     this.rows = rows;
     this.cols = cols;
-    this.activeColor = 'black';
+    this.activeColor = '#000';
     this.activeTheme = '#2f1eb0';
+    this.activeGrid = '';
     this.selectedPixels=[];
     this.savedGrids=[];
     document.querySelector('.active-color').style.backgroundColor=this.activeColor;
@@ -27,7 +28,7 @@ function Board(el, rows, cols){
     this.generateBoard();
     this.addColorPicker();
     this.bindEvents();
-    this.renderGrid('test');
+    this.renderGrid(this.activeGrid='pixllArt');
 
     if(localStorage.getItem('Pixll-Art-Theme')) {
         let bg = JSON.parse(localStorage.getItem('Pixll-Art-Theme'));
@@ -38,44 +39,14 @@ function Board(el, rows, cols){
         this.sidenav.style.backgroundColor =  this.activeTheme;
         this.features.style.backgroundColor =  this.activeTheme;
     }
-    this.savedGrids.push({
+
+
+      this.savedGrids.push({
         "id": 1,
-        "gridName": "tq",
-        "savedPixels": [
-          {
-            "color": "black",
-            "position": "2:2"
-          },
-          {
-            "color": "black",
-            "position": "3:8"
-          },
-          {
-            "color": "black",
-            "position": "3:7"
-          },
-          {
-            "color": "black",
-            "position": "2:7"
-          },
-          {
-            "color": "black",
-            "position": "2:6"
-          },
-          {
-            "color": "black",
-            "position": "3:6"
-          },
-          {
-            "color": "black",
-            "position": "3:5"
-          },
-          {
-            "color": "black",
-            "position": "9:6"
-          }
-        ]
-      });
+        "gridName": "pixllArt",
+        "savedPixels":[]
+      })
+
       localStorage.setItem(this.savedGrids[0].gridName, JSON.stringify(this.savedGrids[0]));
      this.renderSavedGrid();
 }
@@ -208,7 +179,7 @@ Board.prototype.addThemePalette = function(){
 Board.prototype.bindEvents = function(){
     this.el.addEventListener('mousedown', e => {
         this.draw = true;
-            (!this.el.className.includes('picker')) && this.fill(e);
+            (!this.el.className.includes('picker')) && !this.isClearEnabled &&this.fill(e);
         this.isClearEnabled && this.clearBoardBtn(e);
     });
 
@@ -272,7 +243,7 @@ Board.prototype.bindEvents = function(){
     });
 
     this.resetBoard.addEventListener('click', e => {
-        this.resetBoardBtn('test');
+        this.resetBoardBtn(this.activeGrid);
     });
 
     this.clearBoard.addEventListener('click', e => {
@@ -303,7 +274,8 @@ Board.prototype.bindEvents = function(){
         let currentNode = e.target.dataset['savedGrid'];
         if(currentNode!== undefined && currentNode !=='' ) {
             selectedObj=  this.savedGrids.filter((x)=> { return x.id == currentNode});
-           this.renderGrid(selectedObj[0].gridName);
+            this.activeGrid =selectedObj[0].gridName;
+           this.renderGrid(this.activeGrid);
         }
     });
 
@@ -346,7 +318,11 @@ Board.prototype.resetBoardBtn = function(gridName){
 Board.prototype.clearBoardBtn = function(e){
     let bg= e.target.style.backgroundColor ;
     if(bg && this.isClearEnabled){
-        e.target.style.backgroundColor="#fff";
+        e.target.style.backgroundColor="#0ff";
+        console.log( this.selectedPixels.length);
+        this.selectedPixels.splice(this.selectedPixels.findIndex(item => item.color !== e.target.dataset['cell']), 1)
+        
+        console.log( this.selectedPixels.length);
     }
 }
 
@@ -358,8 +334,8 @@ Board.prototype.fill = function(e){
     // cell && (e.target.style.background = this.activeColor);
 // if(cell){
     e.target.style.background = this.activeColor;
-
-    if(cell !== undefined) {
+    document.getElementById("pixell-art-colorPicker").value=this.activeColor;
+    if(cell !== undefined && !this.isClearEnabled) {
         let currentObj= {
             color:e.target.style.background,
             position:cell
@@ -484,7 +460,7 @@ function getRandomColor() {
 Board.prototype.onChangeColor = function(e){
     this.activeColor = e.target.value;
     document.querySelector('.active-color').style.backgroundColor=this.activeColor;
-    // document.getElementById("Myelement").style.color = document.getElementById("ColorPicker1").value; 
+  
 } 
 
  

@@ -90,6 +90,12 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+/* .features{
+    height: 35%;
+    width: 100%;
+    flex-direction: row;
+} */
 .sidenav{
     position: fixed;
     left: 0;
@@ -103,6 +109,13 @@ body{
     background-color: #262626;
     padding: 10px;
 }   
+/* .sidenav{
+    flex-direction: row;
+    justify-content: space-between;
+    bottom:10%;
+    min-width: 100%;
+    height: 10%;
+} */
 
 .btn .fa {
     text-align: left !important;
@@ -211,11 +224,27 @@ h1{
     text-align: center;
 }
 @media only screen and (max-width: 576px) {
+    .board-wrapper{
+        width:15rem;
+        height:15rem;
+    }
     .sidenav-item{
         text-align: center;
     }
     .title-label{
         display: none;  
+    }
+}
+@media only screen and (max-width: 768px) {
+    .board-wrapper{
+        width:20rem;
+        height:20rem;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .board-wrapper{
+        width:25rem;
+        height:25rem;
     }
 }
 

@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixl Art  </title>
+  <title>Pixll Art  </title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="assets/styles/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script async src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <!-- icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
  <!-- Fonts -->
  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap" rel="stylesheet">
    <!-- aos -->
@@ -29,10 +28,10 @@
   </div>
 
    <h1>Pixll Art </h1>
-   <!-- <div class="board-wrapper" data-aos="zoom-in-up" data-aos-delay="700" data-aos-duration="1500"> -->
-   <div class="board-wrapper" >
-   <!-- <div id="board" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="3000"> -->
-   <div id="board" >
+   <div class="board-wrapper" data-aos="zoom-in-up" data-aos-delay="700" data-aos-duration="1500">
+   <!-- <div class="board-wrapper" > -->
+   <div id="board" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="3000">
+   <!-- <div id="board" > -->
   </div>
   </div>
 
@@ -40,13 +39,13 @@
    data-aos-duration="1000">
     <div class="size_slider" data-aos="fade-right" data-aos-delay="400"  data-aos-easing="ease-in-sine">
       <p class="title">Board size </p>
-        <input type="range" id="size_slider" min="30" max="100" value="50">
+        <input type="range" id="size_slider"  min="30" max="100" value="50">
         <span class="boardSize"></span>
     </div>
     <div class="underline"></div>
     <div class="count_slider"  data-aos="fade-left" data-aos-delay="450"  data-aos-easing="ease-in-sine">
       <p class="title">cell count  </p>
-        <input type="range" id="count_slider" min="7" max="55" value="25">
+        <input type="range" id="count_slider" min="7" max="55" value="35">
         <div class="positionRow">
           <span>
             Row :<span class="grid_row"></span>
@@ -105,6 +104,25 @@
  </div>
 
 
+   <!-- Welcome Modal -->
+   <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+          <h3>Welcome To Pixll Art</h3>
+          <p>hope you will love the App</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">let's Explore</button>
+        </div>
+      </div>
+    </div>
+</div>
    <!-- Modal -->
    <div class="modal fade" id="saveGridModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -124,6 +142,8 @@
       </div>
     </div>
 </div>
+
+
 <script>
   AOS.init();
 </script>
@@ -131,7 +151,12 @@
 <script src="./assets/scripts/script.js"></script>
 
 <script>
-  new Board("#board", 25, 25); 
+  new Board("#board", 40, 40); 
+
+setTimeout(() => {
+  $('#welcomeModal').modal('show');
+}, 2100);
+
 </script>
 
 </body>
