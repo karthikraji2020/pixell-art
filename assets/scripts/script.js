@@ -126,6 +126,10 @@ Board.prototype.generateBoard = function() {
     this.navbarToggle =navbarToggleEle;
     sidenavFragment.appendChild(navbarToggleEle);
 
+    let socialEle =createSocialElement();
+    this.socialEle =socialEle;
+    sidenavFragment.appendChild(socialEle);
+
     this.sidenav.appendChild(sidenavFragment);
 
     const fragment = document.createDocumentFragment();
@@ -391,8 +395,38 @@ Board.prototype.sizeValueChange = function(e){
     this.el.style.height =value+'%';
     this.el.style.width = value+'%';
     document.querySelector('.boardSize').innerText =value+'%'; 
-}
-function createElement (el,className,textContent,faClass) {
+  }
+        function createSocialElement () {
+    const element = document.createElement('div');
+    element.classList.add('text-white');
+    // element.classList.add('sidenav-item');
+    let socialIcons =['fa-linkedin','fa-github','fa-instagram','fa-codepen']
+    for (const iterator of socialIcons) {
+      let iele = document.createElement('a');
+          iele.classList.add('fa');
+          iele.classList.add(iterator);
+          iele.classList.add('sidenav-item');
+          iele.classList.add('mx-2');
+          iele.setAttribute('target','_blank');
+          if(iterator==='fa-github'){
+            iele.setAttribute('href','https://github.com/karthikraji2020');
+          }
+          if(iterator==='fa-linkedin'){
+            iele.setAttribute('href','https://www.linkedin.com/in/karthik-r-a70001194');
+          }
+          if(iterator==='fa-instagram'){
+            iele.setAttribute('href','https://www.instagram.com/karthik__raji');
+          }
+          if(iterator==='fa-codepen'){
+            iele.setAttribute('href','https://codepen.io/karthikraji2020');
+          }
+          element.appendChild(iele);
+        }
+    return element;
+
+
+        }
+      function createElement (el,className,textContent,faClass) {
     let iele;
     const element = document.createElement('div');
        (className.includes('logo')) && (element.textContent= textContent)
