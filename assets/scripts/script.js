@@ -400,13 +400,14 @@ Board.prototype.sizeValueChange = function(e){
     const element = document.createElement('div');
     element.classList.add('text-white');
     // element.classList.add('sidenav-item');
-    let socialIcons =['fa-linkedin','fa-github','fa-instagram','fa-codepen']
+    let socialIcons =['fa-linkedin','fa-github','fa-codepen']
     for (const iterator of socialIcons) {
       let iele = document.createElement('a');
           iele.classList.add('fa');
           iele.classList.add(iterator);
           iele.classList.add('sidenav-item');
-          iele.classList.add('mx-2');
+          iele.classList.add('social-media');
+          iele.classList.add('mx-1');
           iele.setAttribute('target','_blank');
           if(iterator==='fa-github'){
             iele.setAttribute('href','https://github.com/karthikraji2020');
@@ -414,9 +415,9 @@ Board.prototype.sizeValueChange = function(e){
           if(iterator==='fa-linkedin'){
             iele.setAttribute('href','https://www.linkedin.com/in/karthik-r-a70001194');
           }
-          if(iterator==='fa-instagram'){
-            iele.setAttribute('href','https://www.instagram.com/karthik__raji');
-          }
+          // if(iterator==='fa-instagram'){
+          //   iele.setAttribute('href','https://www.instagram.com/karthik__raji');
+          // }
           if(iterator==='fa-codepen'){
             iele.setAttribute('href','https://codepen.io/karthikraji2020');
           }
