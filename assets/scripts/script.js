@@ -53,9 +53,8 @@ function Board(el, rows, cols){
 
 Board.prototype.renderSavedGrid= function () {
   this.resetBoardBtn('');
-  while (this.savedGridsList.hasChildNodes()) {
-    this.savedGridsList.removeChild(this.savedGridsList.firstChild);
-  }
+  this.savedGridsList.innerHTML="";
+
     for(let grid of this.savedGrids){
         let gridNameEle = document.createElement('div');
         gridNameEle.dataset["savedGrid"]=`${grid.id}`;
@@ -66,25 +65,11 @@ Board.prototype.renderSavedGrid= function () {
 
 
 Board.prototype.clearBoard = function() {
-  
-    while (this.sidenav.hasChildNodes() ) {
-        this.sidenav.removeChild(this.sidenav.firstChild);
-      }
-    
-    while (this.el.hasChildNodes()) {
-        this.el.removeChild(this.el.firstChild);
-      }
-   
-    while (this.colorPalette.hasChildNodes()) {
-        this.colorPalette.removeChild(this.colorPalette.firstChild);
-      }  
-
-    while (this.themePaletteRow.hasChildNodes()) {
-        this.themePaletteRow.removeChild(this.themePaletteRow.firstChild);
-      }
-    while (this.savedGridsList.hasChildNodes()) {
-        this.savedGridsList.removeChild(this.savedGridsList.firstChild);
-      }
+    this.sidenav.innerHTML="";
+    this.el.innerHTML="";
+    this.colorPalette.innerHTML="";
+    this.themePaletteRow.innerHTML="";
+    this.savedGridsList.innerHTML="";
 
 }
 Board.prototype.generateBoard = function() {
@@ -133,10 +118,10 @@ Board.prototype.generateBoard = function() {
     this.sidenav.appendChild(sidenavFragment);
 
     const fragment = document.createDocumentFragment();
-    for(var i=0; i< this.rows; i++){
+    for(let i=0; i< this.rows; i++){
         const row = document.createElement('div');
         row.classList.add('rows');
-        for(var j=0; j< this.cols; j++){
+        for(let j=0; j< this.cols; j++){
             const col = document.createElement('div');
             col.classList.add('columns');
             col.dataset["cell"] = i+":"+j;
@@ -150,10 +135,10 @@ Board.prototype.generateBoard = function() {
 Board.prototype.addColorPicker = function(){
     let paletteRowlen= (this.rows /this.cols)+1;
     const fragment = document.createDocumentFragment();
-    for(var i=0; i< paletteRowlen; i++){
+    for(let i=0; i< paletteRowlen; i++){
     const row = document.createElement('div');
     row.classList.add('colorTileRow');
-        for(var j=0; j< 5; j++){
+        for(let j=0; j< 5; j++){
             const color = getRandomColor()
             const col = document.createElement('div');
             col.classList.add('colorTile');
@@ -177,8 +162,6 @@ Board.prototype.addThemePalette = function(){
         fragment.appendChild(col);
     }
     this.themePaletteRow.appendChild(fragment);
-
-   
 }
 Board.prototype.bindEvents = function(){
     this.el.addEventListener('mousedown', e => {
@@ -311,8 +294,8 @@ Board.prototype.toggleShapeBtn = function(e){
 }
 
 Board.prototype.resetBoardBtn = function(gridName){
-        for(var i=0; i< this.rows; i++){
-            for(var j=0; j< this.cols; j++){
+        for(let i=0; i< this.rows; i++){
+            for(let j=0; j< this.cols; j++){
                 document.querySelector(`.columns[data-cell='${i}:${j}']`).style.background="";              
             }
         }
@@ -475,7 +458,7 @@ Board.prototype.sizeValueChange = function(e){
 downloadImage = function() {
     html2canvas(document.querySelector("#board")).then(function(canvas) {
        let dataURL= canvas.toDataURL('image/jpg', 1.0);
-        var a = document.createElement("a"); //Create <a>
+        let a = document.createElement("a"); //Create <a>
         a.href = dataURL; //Image Base64 Goes here
         let timeInMiliSec = Date.now();
         a.download = `pixelArt${timeInMiliSec}.jpg`; //File name Here
@@ -484,9 +467,9 @@ downloadImage = function() {
   }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
