@@ -305,7 +305,7 @@ Board.prototype.resetBoardBtn = function(gridName){
 Board.prototype.clearBoardBtn = function(e){
     let bg= e.target.style.backgroundColor ;
     if(bg && this.isClearEnabled){
-        e.target.style.backgroundColor="#0ff";
+        e.target.style.backgroundColor="#fff";
         console.log( this.selectedPixels.length);
         this.selectedPixels.splice(this.selectedPixels.findIndex(item => item.color !== e.target.dataset['cell']), 1)
         
