@@ -1,4 +1,4 @@
-function Board(el, rows, cols){
+function PixllArt(el, rows, cols){
     this.el = document.querySelector(el);
     this.colorPalette = document.querySelector('.color-palette');
     this.sidenav = document.querySelector('.sidenav');
@@ -32,12 +32,18 @@ function Board(el, rows, cols){
 
     if(localStorage.getItem('Pixll-Art-Theme')) {
         let bg = JSON.parse(localStorage.getItem('Pixll-Art-Theme'));
-        console.log(bg,'bg');
-        this.sidenav.style.backgroundColor = bg;
-        this.features.style.backgroundColor = bg;
+        // console.log(bg,'bg');
+        // this.sidenav.style.backgroundColor = bg;
+        // this.features.style.backgroundColor = bg;
+        var style = getComputedStyle(document.body);
+        // console.log(style.getPropertyValue('--bg-primary'));
+        document.documentElement.style.setProperty('--bg-primary',bg);
     } else {
-        this.sidenav.style.backgroundColor =  this.activeTheme;
-        this.features.style.backgroundColor =  this.activeTheme;
+        // this.sidenav.style.backgroundColor =  this.activeTheme;
+        // this.features.style.backgroundColor =  this.activeTheme;
+        var style = getComputedStyle(document.body);
+        // console.log(style.getPropertyValue('--bg-primary'));
+        document.documentElement.style.setProperty('--bg-primary', this.activeTheme);
     }
 
 
@@ -51,7 +57,7 @@ function Board(el, rows, cols){
      this.renderSavedGrid();
 }
 
-Board.prototype.renderSavedGrid= function () {
+PixllArt.prototype.renderSavedGrid= function () {
   this.resetBoardBtn('');
   this.savedGridsList.innerHTML="";
 
@@ -64,7 +70,7 @@ Board.prototype.renderSavedGrid= function () {
 }
 
 
-Board.prototype.clearBoard = function() {
+PixllArt.prototype.clearBoard = function() {
     this.sidenav.innerHTML="";
     this.el.innerHTML="";
     this.colorPalette.innerHTML="";
@@ -72,7 +78,7 @@ Board.prototype.clearBoard = function() {
     this.savedGridsList.innerHTML="";
 
 }
-Board.prototype.generateBoard = function() {
+PixllArt.prototype.generateBoard = function() {
    
     const sidenavFragment = document.createDocumentFragment();
     //createElement (el,className,textContent,faclass)
@@ -132,7 +138,7 @@ Board.prototype.generateBoard = function() {
     this.el.appendChild(fragment);
 }
 
-Board.prototype.addColorPicker = function(){
+PixllArt.prototype.addColorPicker = function(){
     let paletteRowlen= (this.rows /this.cols)+1;
     const fragment = document.createDocumentFragment();
     for(let i=0; i< paletteRowlen; i++){
@@ -153,7 +159,7 @@ Board.prototype.addColorPicker = function(){
 }
 
 
-Board.prototype.addThemePalette = function(){
+PixllArt.prototype.addThemePalette = function(){
     const fragment = document.createDocumentFragment();
     for (const color of this.themePaletteColors) {
         const col = document.createElement('div');
@@ -163,7 +169,7 @@ Board.prototype.addThemePalette = function(){
     }
     this.themePaletteRow.appendChild(fragment);
 }
-Board.prototype.bindEvents = function(){
+PixllArt.prototype.bindEvents = function(){
     this.el.addEventListener('mousedown', e => {
         this.draw = true;
             (!this.el.className.includes('picker')) && !this.isClearEnabled &&this.fill(e);
@@ -251,8 +257,7 @@ Board.prototype.bindEvents = function(){
       let colValue =e.target.value;
       this.gridRowPos.innerText = rowValue;
       this.gridColPos.innerText = colValue;
-      
-      new Board("#board", rowValue, colValue); 
+      new PixllArt("#board", rowValue, colValue); 
     });
 
     this.savedGridsList.addEventListener('click',(e)=>{
@@ -272,28 +277,33 @@ Board.prototype.bindEvents = function(){
     
 }
 
-Board.prototype.changeTheme = function(e) {
+PixllArt.prototype.changeTheme = function(e) {
         this.activeTheme = e.target.style.backgroundColor;
-        this.sidenav.style.backgroundColor = this.activeTheme;
-        this.features.style.backgroundColor = this.activeTheme;
+        var style = getComputedStyle(document.body);
+        let heigh=style.getPropertyValue('--bg-primary')
+        console.log(style.getPropertyValue('--bg-primary'));
+        document.documentElement.style.setProperty('--bg-primary', this.activeTheme);
+        // document.documentElement.style.setProperty('--board-child-width', this.colCount);
+        // this.sidenav.style.backgroundColor = this.activeTheme;
+        // this.features.style.backgroundColor = this.activeTheme;
         localStorage.setItem('Pixll-Art-Theme',JSON.stringify(this.activeTheme));
 }
 
-Board.prototype.toggleGridBtn = function(e){
+PixllArt.prototype.toggleGridBtn = function(e){
     this.el.classList.toggle("border-none");
 }
-Board.prototype.togglePickerBtn = function(e){
+PixllArt.prototype.togglePickerBtn = function(e){
     this.el.classList.toggle("picker");
 }
-Board.prototype.navbarToggleBtn = function(){
+PixllArt.prototype.navbarToggleBtn = function(){
     this.sidenav.classList.toggle("title-label-hide");
 }
 
-Board.prototype.toggleShapeBtn = function(e){
+PixllArt.prototype.toggleShapeBtn = function(e){
     this.el.classList.toggle("shape-circle");
 }
 
-Board.prototype.resetBoardBtn = function(gridName){
+PixllArt.prototype.resetBoardBtn = function(gridName){
         for(let i=0; i< this.rows; i++){
             for(let j=0; j< this.cols; j++){
                 document.querySelector(`.columns[data-cell='${i}:${j}']`).style.background="";              
@@ -302,18 +312,17 @@ Board.prototype.resetBoardBtn = function(gridName){
         (localStorage.getItem(gridName))&&(localStorage.removeItem(gridName))
 }
 
-Board.prototype.clearBoardBtn = function(e){
+PixllArt.prototype.clearBoardBtn = function(e){
     let bg= e.target.style.backgroundColor ;
     if(bg && this.isClearEnabled){
         e.target.style.backgroundColor="#fff";
         console.log( this.selectedPixels.length);
         this.selectedPixels.splice(this.selectedPixels.findIndex(item => item.color !== e.target.dataset['cell']), 1)
-        
         console.log( this.selectedPixels.length);
     }
 }
 
-Board.prototype.fill = function(e){
+PixllArt.prototype.fill = function(e){
     const cell = e.target.dataset['cell'];
     const color = e.target.dataset['color'];
     color && (this.activeColor = color);
@@ -334,7 +343,7 @@ Board.prototype.fill = function(e){
 
    
 }
-Board.prototype.renderGrid =function (gridName) {
+PixllArt.prototype.renderGrid =function (gridName) {
 
       if(localStorage.getItem(gridName)){
         this.selectedPixels = JSON.parse(localStorage.getItem(gridName)).savedPixels;
@@ -356,7 +365,7 @@ Board.prototype.renderGrid =function (gridName) {
       document.querySelector('.boardSize').innerText =this.size_sliderVal.value+'%'; 
 }
 
-Board.prototype.saveAsGrid =function () {
+PixllArt.prototype.saveAsGrid =function () {
     let gridName = document.querySelector('#gridName').value;
     if(gridName) {
         let saveFrameObj = {
@@ -373,7 +382,7 @@ Board.prototype.saveAsGrid =function () {
 }
 
 
-Board.prototype.sizeValueChange = function(e){
+PixllArt.prototype.sizeValueChange = function(e){
     let value =e.target.value;
     this.el.style.height =value+'%';
     this.el.style.width = value+'%';
@@ -475,7 +484,7 @@ function getRandomColor() {
     return color;
 }
 
-Board.prototype.onChangeColor = function(e){
+PixllArt.prototype.onChangeColor = function(e){
     this.activeColor = e.target.value;
     document.querySelector('.active-color').style.backgroundColor=this.activeColor;
   
