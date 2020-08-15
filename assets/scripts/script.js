@@ -6,7 +6,7 @@ function PixllArt(el, rows, cols){
     this.themePalette = document.querySelector('.theme-palette');
     this.themePaletteRow = document.querySelector('.theme-paletteRow');
     this.navbarToggle = document.querySelector('.navbarToggle');
-    this.themePaletteColors = ["#262626","#2f1eb0","#a06607","#1e7e34","#980a89"]
+    this.themePaletteColors = ["#2f1eb0","#262626","#1e7e34","#980a89","#a06607"]
     this.rows = rows;
     this.cols = cols;
     this.activeColor = '#000';
@@ -32,20 +32,12 @@ function PixllArt(el, rows, cols){
 
     if(localStorage.getItem('Pixll-Art-Theme')) {
         let bg = JSON.parse(localStorage.getItem('Pixll-Art-Theme'));
-        // console.log(bg,'bg');
-        // this.sidenav.style.backgroundColor = bg;
-        // this.features.style.backgroundColor = bg;
         var style = getComputedStyle(document.body);
-        // console.log(style.getPropertyValue('--bg-primary'));
         document.documentElement.style.setProperty('--bg-primary',bg);
     } else {
-        // this.sidenav.style.backgroundColor =  this.activeTheme;
-        // this.features.style.backgroundColor =  this.activeTheme;
         var style = getComputedStyle(document.body);
-        // console.log(style.getPropertyValue('--bg-primary'));
         document.documentElement.style.setProperty('--bg-primary', this.activeTheme);
     }
-
 
       this.savedGrids.push({
         "id": 1,
@@ -60,7 +52,6 @@ function PixllArt(el, rows, cols){
 PixllArt.prototype.renderSavedGrid= function () {
   this.resetBoardBtn('');
   this.savedGridsList.innerHTML="";
-
     for(let grid of this.savedGrids){
         let gridNameEle = document.createElement('div');
         gridNameEle.dataset["savedGrid"]=`${grid.id}`;
@@ -68,7 +59,6 @@ PixllArt.prototype.renderSavedGrid= function () {
         this.savedGridsList.appendChild(gridNameEle);
     }
 }
-
 
 PixllArt.prototype.clearBoard = function() {
     this.sidenav.innerHTML="";
@@ -82,7 +72,7 @@ PixllArt.prototype.generateBoard = function() {
    
     const sidenavFragment = document.createDocumentFragment();
     //createElement (el,className,textContent,faclass)
-    let logoEle =createElement('b','pixll-art-logo','Picxll','');
+    let logoEle =createElement('b','pixll-art-logo','PixllArt','');
     sidenavFragment.appendChild(logoEle);
 
     let crEle =createElement('button','toggle-grid','Grid','fa-th');
@@ -157,7 +147,6 @@ PixllArt.prototype.addColorPicker = function(){
     this.colorPalette.appendChild(fragment);
     this.addThemePalette();
 }
-
 
 PixllArt.prototype.addThemePalette = function(){
     const fragment = document.createDocumentFragment();
@@ -280,12 +269,7 @@ PixllArt.prototype.bindEvents = function(){
 PixllArt.prototype.changeTheme = function(e) {
         this.activeTheme = e.target.style.backgroundColor;
         var style = getComputedStyle(document.body);
-        let heigh=style.getPropertyValue('--bg-primary')
-        console.log(style.getPropertyValue('--bg-primary'));
         document.documentElement.style.setProperty('--bg-primary', this.activeTheme);
-        // document.documentElement.style.setProperty('--board-child-width', this.colCount);
-        // this.sidenav.style.backgroundColor = this.activeTheme;
-        // this.features.style.backgroundColor = this.activeTheme;
         localStorage.setItem('Pixll-Art-Theme',JSON.stringify(this.activeTheme));
 }
 
@@ -374,13 +358,18 @@ PixllArt.prototype.saveAsGrid =function () {
             savedPixels:this.selectedPixels
         };
         this.savedGrids.push(saveFrameObj);
-         this.renderSavedGrid();
+        this.renderSavedGrid();
         localStorage.setItem(gridName, JSON.stringify(saveFrameObj));
         document.querySelector('#gridName').value='';
         document.querySelector('.close').click();
     }
 }
 
+PixllArt.prototype.onChangeColor = function(e){
+    this.activeColor = e.target.value;
+    document.querySelector('.active-color').style.backgroundColor=this.activeColor;
+  
+} 
 
 PixllArt.prototype.sizeValueChange = function(e){
     let value =e.target.value;
@@ -451,14 +440,8 @@ PixllArt.prototype.sizeValueChange = function(e){
     // }
     element.setAttribute("title",textContent);
     element.classList.add(className);
-    //   element.dataset["aos"]="flip-up";
-    //   element.dataset["aosEasing"] = "linear";
-    //   element.dataset["aosDuration"] ="2000";
     if(!className.includes('logo')){
         element.classList.add('sidenav-item');
-    //         element.dataset["aos"]="flip-up";
-    //   element.dataset["aosEasing"] = "linear";
-    //   element.dataset["aosDuration"] ="2000";
     }
   
     return element;
@@ -484,10 +467,3 @@ function getRandomColor() {
     return color;
 }
 
-PixllArt.prototype.onChangeColor = function(e){
-    this.activeColor = e.target.value;
-    document.querySelector('.active-color').style.backgroundColor=this.activeColor;
-  
-} 
-
- 
